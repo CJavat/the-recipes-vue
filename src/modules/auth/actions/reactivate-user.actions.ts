@@ -1,21 +1,23 @@
 import { AxiosError, isAxiosError } from 'axios'
 import { recipesApi } from '@/api/recipesApi'
 
-import type { ErrorResponse, LoginResponse } from '@/modules/interfaces'
+import type { ErrorResponse } from '@/modules/interfaces'
 
 interface ActionsResponse {
   ok: boolean
-  data: LoginResponse | null
   message: string | string[]
 }
 
-export const authLogin = async (email: string, password: string): Promise<ActionsResponse> => {
+export const reactivateUser = async (email: string): Promise<ActionsResponse> => {
   email = email.toLowerCase().trim()
 
   try {
-    const { data } = await recipesApi.post<LoginResponse>('/auth/login', { email, password })
+    const { data } = await recipesApi.post('/users/reactivate-account', { email })
 
-    return { ok: true, data, message: 'Inicio de sesión satisfactoriamente' }
+    return {
+      ok: true,
+      message: data.message
+    }
   } catch (error) {
     if (isAxiosError(error)) {
       console.log(error)
@@ -24,14 +26,12 @@ export const authLogin = async (email: string, password: string): Promise<Action
 
       return {
         ok: false,
-        data: null,
         message: loginError?.message ?? ['Ocurrió un error desconocido']
       }
     }
 
-    return {
+    throw {
       ok: false,
-      data: null,
       message: 'Ocurrió un error desconocido'
     }
   }

@@ -1,29 +1,22 @@
 import { AxiosError, isAxiosError } from 'axios'
 import { recipesApi } from '@/api/recipesApi'
 
-import type { ErrorResponse, RegisterResponse, RegisterUser } from '@/modules/interfaces'
+import type { ErrorResponse, LoginResponse } from '@/modules/interfaces'
 
 interface ActionsResponse {
   ok: boolean
-  data: RegisterResponse | null
+  data: LoginResponse | null
   message: string | string[]
 }
 
-export const authRegister = async (registerUser: RegisterUser): Promise<ActionsResponse> => {
-  const formatRegister: RegisterUser = {
-    firstName: registerUser.firstName.toLowerCase().trim(),
-    lastName: registerUser.lastName.toLowerCase().trim(),
-    email: registerUser.email.toLowerCase().trim(),
-    password: registerUser.password.trim()
-  }
-
+export const checkStatus = async (): Promise<ActionsResponse> => {
   try {
-    const { data } = await recipesApi.post<RegisterResponse>('/auth/register', formatRegister)
+    const { data } = await recipesApi.get<LoginResponse>('/auth/check-token')
 
     return {
       ok: true,
       data,
-      message: 'Usuario registrado exitosamenete'
+      message: 'Token generado correctamente'
     }
   } catch (error) {
     if (isAxiosError(error)) {
