@@ -1,0 +1,15 @@
+<template>
+  <footer
+    class="px-5 h-20 w-full bg-sky-50 dark:bg-sky-950 border-t border-t-sky-200 dark:border-t-sky-900 flex items-center justify-center sm:justify-start"
+  >
+    <p class="text-black dark:text-white font-bold text-xs">
+      © {{ year }} The Recipes - Todos los derechos reservados
+    </p>
+  </footer>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const year = ref(new Date().getFullYear())
+</script>

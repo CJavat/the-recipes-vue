@@ -1,7 +1,7 @@
 import { AxiosError, isAxiosError } from 'axios'
 import { recipesApi } from '@/api/recipesApi'
 
-import type { ErrorResponse, LoginResponse } from '@/modules/interfaces'
+import type { ErrorResponse, LoginResponse } from '@/modules/auth/interfaces'
 
 interface ActionsResponse {
   ok: boolean

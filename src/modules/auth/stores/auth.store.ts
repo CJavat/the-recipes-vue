@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
 
@@ -10,7 +10,7 @@ import {
   reactivateUser
 } from '../actions'
 
-import { AuthStatus, type RegisterUser, type User } from '@/modules/interfaces'
+import { AuthStatus, type RegisterUser, type User } from '@/modules/auth/interfaces'
 
 export const useAuthStore = defineStore('auth', () => {
   const authStatus = ref<AuthStatus>(AuthStatus.Checking)
@@ -87,12 +87,12 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const checkAuthStatus = async (): Promise<User> => {
+  const checkAuthStatus = async (): Promise<boolean> => {
     try {
       const response = await checkStatus()
       if (!response.ok || response.data === null) {
         logout()
-        throw new Error(Array.isArray(response.message) ? response.message[0] : response.message)
+        return false
       }
 
       localStorage.setItem('token', response.data.token)
@@ -101,11 +101,11 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = response.data
       token.value = response.data.token
 
-      return response.data
+      return true
     } catch (error) {
       console.log(error)
       logout()
-      throw new Error(error as string)
+      return false
     }
   }
 
@@ -128,6 +128,8 @@ export const useAuthStore = defineStore('auth', () => {
     token,
 
     //* Getters
+    isChecking: computed(() => authStatus.value === AuthStatus.Checking),
+    isAuthenticated: computed(() => authStatus.value === AuthStatus.Authenticated),
 
     //* Actions
     login,
