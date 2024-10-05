@@ -7,7 +7,8 @@ import {
   authLogin,
   authRegister,
   checkStatus,
-  reactivateUser
+  reactivateUser,
+  updateForgotPassword
 } from '../actions'
 
 import { AuthStatus, type RegisterUser, type User } from '@/modules/auth/interfaces'
@@ -22,7 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authLogin(email, password)
       if (!response.ok || response.data === null) {
         logout()
-        throw new Error(Array.isArray(response.message) ? response.message[0] : response.message)
+        throw Array.isArray(response.message) ? response.message[0] : response.message
       }
 
       localStorage.setItem('token', response.data.token)
@@ -35,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     } catch (error) {
       console.log(error)
       logout()
-      throw new Error(error as string)
+      throw error as string
     }
   }
 
@@ -44,14 +45,14 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authRegister(registerUser)
       if (!response.ok) {
         logout()
-        throw new Error(Array.isArray(response.message) ? response.message[0] : response.message)
+        throw Array.isArray(response.message) ? response.message[0] : response.message
       }
 
       return response.message as string
     } catch (error) {
       console.log(error)
       logout()
-      throw new Error(error as string)
+      throw error as string
     }
   }
 
@@ -60,14 +61,30 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authForgotPassword(email)
       if (!response.ok) {
         logout()
-        throw new Error(Array.isArray(response.message) ? response.message[0] : response.message)
+        throw Array.isArray(response.message) ? response.message[0] : response.message
       }
 
       return response.message as string
     } catch (error) {
       console.log(error)
       logout()
-      throw new Error(error as string)
+      throw error as string
+    }
+  }
+
+  const updatePassword = async (token: string, password: string) => {
+    try {
+      const response = await updateForgotPassword(token, password)
+      if (!response.ok) {
+        logout()
+        throw Array.isArray(response.message) ? response.message[0] : response.message
+      }
+
+      return response.message as string
+    } catch (error) {
+      console.log(error)
+      logout()
+      throw error as string
     }
   }
 
@@ -76,20 +93,21 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await reactivateUser(email)
       if (!response.ok) {
         logout()
-        throw new Error(Array.isArray(response.message) ? response.message[0] : response.message)
+        throw Array.isArray(response.message) ? response.message[0] : response.message
       }
 
       return response.message as string
     } catch (error) {
       console.log(error)
       logout()
-      throw new Error(error as string)
+      throw error as string
     }
   }
 
   const checkAuthStatus = async (): Promise<boolean> => {
     try {
       const response = await checkStatus()
+
       if (!response.ok || response.data === null) {
         logout()
         return false
@@ -135,6 +153,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     forgotPassword,
+    updatePassword,
     reactivateAccount,
     checkAuthStatus,
     updateUser,

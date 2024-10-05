@@ -1,5 +1,3 @@
-//TODO: Probablemente tenga que agregar el "class" como un defineProps.
-
 <template>
   <button @click="changeTheme">
     <img :src="urlImage.src" :alt="urlImage.alt" class="h-fit w-8 md:w-9" />

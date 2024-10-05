@@ -137,8 +137,14 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth.store'
+
+import Swal from 'sweetalert2'
 import Spinner from '../../common/components/Spinner.vue'
 
+const router = useRouter()
+const authStore = useAuthStore()
 const isLoadingRef = ref<boolean>(false)
 
 const myForm = reactive({
@@ -173,9 +179,14 @@ const onSubmit = async () => {
     if (myForm.rePassword !== myForm.password) return (formErrors.rePassword = true)
     formErrors.rePassword = false
 
-    //TODO: Enviar la petición al Store.
+    const message = await authStore.register(myForm)
+
+    Swal.fire('Registro exitoso!', message, 'success').then(() => router.replace({ name: 'login' }))
+
+    return
   } catch (error) {
     console.error(error)
+    Swal.fire('Error', error as string, 'error')
   } finally {
     isLoadingRef.value = false
   }

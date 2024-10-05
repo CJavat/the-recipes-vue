@@ -74,9 +74,17 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth.store'
+import Swal from 'sweetalert2'
 import Spinner from '../../common/components/Spinner.vue'
 
 const isLoadingRef = ref<boolean>(false)
+const router = useRouter()
+const route = useRoute()
+const authStore = useAuthStore()
+
+const token = route.fullPath.split('/').slice(-1)[0]
 
 const myForm = reactive({
   password: '',
@@ -97,9 +105,14 @@ const onSubmit = async () => {
     if (myForm.rePassword !== myForm.password) return (formErrors.rePassword = true)
     formErrors.rePassword = false
 
-    //TODO: Enviar la petición al Store.
+    const message = await authStore.updatePassword(token, myForm.password)
+
+    Swal.fire('Cuenta Actualizada', message, 'success').then(() =>
+      router.replace({ name: 'login' })
+    )
   } catch (error) {
     console.error(error)
+    Swal.fire('Error', error as string, 'error')
   } finally {
     isLoadingRef.value = false
   }

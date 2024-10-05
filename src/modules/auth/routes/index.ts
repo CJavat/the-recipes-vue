@@ -30,7 +30,7 @@ export const authRoutes: RouteRecordRaw = {
     },
     {
       path: 'update-password/:token',
-      name: 'update-password/',
+      name: 'update-password',
       component: () => import('@/modules/auth/views/UpdateForgotVuew.vue')
     }
   ]

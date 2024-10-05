@@ -100,9 +100,14 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth.store'
+import Swal from 'sweetalert2'
 import Spinner from '../../common/components/Spinner.vue'
 
 const isLoadingRef = ref<boolean>(false)
+const router = useRouter()
+const authStore = useAuthStore()
 
 const myForm = reactive({
   email: '',
@@ -116,17 +121,23 @@ const formErrors = reactive({
 
 const onSubmit = async () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  isLoadingRef.value = true
 
+  isLoadingRef.value = true
   try {
     if (!emailRegex.test(myForm.email)) return (formErrors.email = true)
     formErrors.email = false
     if (myForm.password.length < 6) return (formErrors.password = true)
     formErrors.password = false
 
-    //TODO: Enviar la petición al Store.
+    const resp = await authStore.login(myForm.email, myForm.password)
+
+    if (!resp) throw 'Ocurrió un error al iniciar sesión'
+
+    router.replace({ name: 'home' })
+    return
   } catch (error) {
     console.error(error)
+    Swal.fire('Error', error as string, 'error')
   } finally {
     isLoadingRef.value = false
   }

@@ -45,7 +45,7 @@
         </div>
 
         <div class="flex items-center justify-center sm:items-stretch sm:justify-start">
-          <RouterLink :to="{ name: 'Home' }" class="flex flex-shrink-0 items-center mx-5 md:mx-0">
+          <RouterLink :to="{ name: 'home' }" class="flex flex-shrink-0 items-center mx-5 md:mx-0">
             <img
               class="h-8 w-auto rounded-md"
               src="/android-chrome-512x512.png"
@@ -71,16 +71,10 @@
 
         <div class="relative flex items-center gap-3 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <!-- Search Component -->
-          <!-- 
-            //TODO: Terminar de implementar.
-            <dashboard-search-component /> 
-          -->
+          <Search />
 
           <!-- Sun/Moon Theme  -->
-          <!-- 
-            //TODO: Terminar de implementar.
-            <ChangeTheme class="hidden sm:block" /> 
-          -->
+          <ChangeTheme class="hidden sm:block" />
 
           <!-- Profile dropdown -->
           <div class="relative">
@@ -164,49 +158,45 @@
         </RouterLink>
       </div>
       <!-- Sun/Moon Theme  -->
-      <!-- 
-        //TODO: Terminar de implementar.
-        <ChangeTheme class="block mt-7 px-3" /> 
-      -->
+      <ChangeTheme class="block my-2 px-3" />
     </div>
   </nav>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-import ChangeTheme from '@/modules/common/components/ChangeTheme.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/modules/auth/stores/auth.store'
 
-export interface ImageUser {
-  src: string
-  alt: string
-}
+import ChangeTheme from '@/modules/common/components/ChangeTheme.vue'
+import Search from './Search.vue'
+
+import type { ImageUser } from '../interfaces'
 
 export interface Routes {
   label: string
   name: string
 }
 
-interface Props {
-  imageUser: ImageUser | null
-}
+const props = defineProps<{ imageUser: ImageUser }>()
 
-defineProps<Props>()
 const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
 
 const isExpanded = ref<boolean>(false)
 const isExpandedProfile = ref<boolean>(false)
 
 const recipesRoutes: Routes[] = [
-  { label: 'Inicio', name: '/dashboard' },
+  { label: 'Inicio', name: 'home' },
   { label: 'Recetas', name: 'recipes' },
   { label: 'Categorias', name: 'categories' },
   { label: 'Recetas Favoritas', name: 'favorites' }
 ]
 const accountRoutes: Routes[] = [
-  { label: 'Mi Cuenta', name: 'auth/my-account' },
-  { label: 'Mis Recetas', name: 'auth/my-recipes' },
-  { label: 'Configuraciones', name: 'auth/settings' }
+  { label: 'Mi Cuenta', name: 'my-account' },
+  { label: 'Mis Recetas', name: 'my-recipes' },
+  { label: 'Configuraciones', name: 'settings' }
 ]
 
 const isCurrentPage = (path: string) => {
@@ -246,8 +236,7 @@ const toggleNavMenu = (event: Event, nameButton?: string): void => {
 }
 
 const OnLogout = (): void => {
-  //TODO: Terminar de implementar.
-  // this.authService.logout();
-  // this.router.navigateByUrl('/auth/login');
+  authStore.logout()
+  router.replace('/auth')
 }
 </script>

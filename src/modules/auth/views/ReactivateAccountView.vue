@@ -53,8 +53,14 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth.store'
+
+import Swal from 'sweetalert2'
 import Spinner from '../../common/components/Spinner.vue'
 
+const router = useRouter()
+const authStore = useAuthStore()
 const isLoadingRef = ref<boolean>(false)
 
 const myForm = reactive({
@@ -73,9 +79,14 @@ const onSubmit = async () => {
     if (!emailRegex.test(myForm.email)) return (formErrors.email = true)
     formErrors.email = false
 
-    //TODO: Enviar la petición al Store.
+    const message = await authStore.reactivateAccount(myForm.email)
+
+    Swal.fire('Cuenta Reactivada!', message, 'success').then(() =>
+      router.replace({ name: 'login' })
+    )
   } catch (error) {
     console.error(error)
+    Swal.fire('Error', error as string, 'error')
   } finally {
     isLoadingRef.value = false
   }

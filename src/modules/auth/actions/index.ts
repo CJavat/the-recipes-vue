@@ -1,5 +1,6 @@
 export * from './auth-login.actions'
 export * from './auth-register.actions'
 export * from './auth-forgot-password.actions'
+export * from './update-forgot-password.action'
 export * from './reactivate-user.actions'
 export * from './check-status.action'
