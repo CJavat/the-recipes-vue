@@ -1,5 +1,8 @@
 <template>
-  <div v-if="authStore.isChecking" class="w-full min-h-screen flex justify-center items-center">
+  <div
+    v-if="authStore.isChecking"
+    class="w-full min-h-screen flex justify-center items-center bg-sky-50 dark:bg-sky-950"
+  >
     <Spinner class="w-40" />
   </div>
 

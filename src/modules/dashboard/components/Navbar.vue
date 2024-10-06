@@ -164,7 +164,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/modules/auth/stores/auth.store'
 
@@ -193,6 +193,7 @@ const recipesRoutes: Routes[] = [
   { label: 'Categorias', name: 'categories' },
   { label: 'Recetas Favoritas', name: 'favorites' }
 ]
+
 const accountRoutes: Routes[] = [
   { label: 'Mi Cuenta', name: 'my-account' },
   { label: 'Mis Recetas', name: 'my-recipes' },
@@ -202,28 +203,6 @@ const accountRoutes: Routes[] = [
 const isCurrentPage = (path: string) => {
   return route.path === path
 }
-
-//TODO: Terminar de implementar.
-// Este HostListener escucha clics en cualquier parte del documento
-// @HostListener('document:click', ['$event'])
-// const onDocumentClick = (event: MouseEvent) => {
-//   const targetElement = event.target as HTMLElement;
-
-//   // Si el clic no fue dentro del menú o del botón, cierra el menú
-//   if (
-//     targetElement.id !== 'user-menu-button' &&
-//     !targetElement.closest('#user-menu')
-//   ) {
-//     isExpandedProfile.value = false;
-//   }
-
-//   if (
-//     targetElement.id !== 'mobile-menu-button' &&
-//     !targetElement.closest('#mobile-menu')
-//   ) {
-//     isExpanded.value = false;
-//   }
-// }
 
 const toggleNavMenu = (event: Event, nameButton?: string): void => {
   event.stopPropagation()
@@ -239,4 +218,25 @@ const OnLogout = (): void => {
   authStore.logout()
   router.replace('/auth')
 }
+
+const onDocumentClick = (event: MouseEvent) => {
+  const targetElement = event.target as HTMLElement
+
+  // Si el clic no fue dentro del menú o del botón, cierra el menú
+  if (targetElement.id !== 'user-menu-button' && !targetElement.closest('#user-menu')) {
+    isExpandedProfile.value = false
+  }
+
+  if (targetElement.id !== 'mobile-menu-button' && !targetElement.closest('#mobile-menu')) {
+    isExpanded.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', onDocumentClick)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onDocumentClick)
+})
 </script>
