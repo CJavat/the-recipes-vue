@@ -38,14 +38,13 @@ export const removeFavoriteAction = async (recipeId: string): Promise<void> => {
 //? Recipes
 export const getAllRecipesAction = async (
   limit: number,
-  offset: number | null
+  offset: number | undefined
 ): Promise<RecipeResponse> => {
   try {
-    if (offset! <= 0) offset = null
+    const params: Record<string, any> = { limit }
+    if (offset ?? 0 <= 0) params.offset = offset
 
-    const { data } = await recipesApi.get('/recipes', {
-      params: { limit, offset }
-    })
+    const { data } = await recipesApi.get('/recipes', { params })
     return data
   } catch (error) {
     console.log(error)

@@ -58,8 +58,6 @@ onMounted(() => {
   } else {
     imageUrl.value = `${backendUrl}/${props.recipe?.image}`
   }
-
-  console.log(imageUrl.value)
 })
 
 const toggleSubmit = () => {
