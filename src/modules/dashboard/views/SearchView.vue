@@ -24,14 +24,13 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useRecipeStore } from '../stores'
 import Swal from 'sweetalert2'
 import RecipeCard from '../components/RecipeCard.vue'
 import Spinner from '@/modules/common/components/Spinner.vue'
 import type { CardRecipe } from '../interfaces'
 
-const router = useRouter()
 const route = useRoute()
 const recipeStore = useRecipeStore()
 
