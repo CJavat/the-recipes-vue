@@ -116,7 +116,6 @@ const getRecipes = async (limit: number, offset: number) => {
       isFavorite: favoritesResponse.some((fav: FavoriteResponse) => fav.recipeId === recipe.id)
     }))
 
-    console.log(totalPages)
     finalPage.value = totalPages
   } catch (error) {
     console.log(error)

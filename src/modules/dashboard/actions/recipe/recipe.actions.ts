@@ -134,7 +134,7 @@ export const createRecipeAction = async (formData: FormData): Promise<Recipe> =>
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      transformRequest: (formData) => formData
+      transformRequest: (formData) => formData //! Revisar que haga todo bien.
     })
     return data
   } catch (error) {
@@ -149,7 +149,7 @@ export const updateRecipeAction = async (recipeId: string, formData: FormData): 
       headers: {
         'Content-Type': 'multipart/form-data'
       },
-      transformRequest: (formData) => formData
+      transformRequest: (formData) => formData //! Revisar que haga todo bien.
     })
     return data
   } catch (error) {

@@ -1,7 +1,52 @@
 <template>
-  <h1>Settings View</h1>
+  <div
+    class="-mx-5 -mb-[40px] flex antialiased text-black selection:bg-blue-600 selection:text-white"
+  >
+    <div class="flex relative w-full">
+      <div
+        id="menu"
+        class="bg-sky-50 dark:bg-sky-950 border-r border-r-sky-200 dark:border-r-sky-900 z-10 text-slate-300 w-44 md:w-64 left-0"
+      >
+        <div id="logo" class="my-4 px-1 md:px-6">
+          <h3 class="text-sm md:text-2xl font-bold text-sky-950 dark:text-sky-50">
+            Configuraciones
+          </h3>
+        </div>
+
+        <div id="nav" class="w-full px-1 md:px-6">
+          <RouterLink
+            to="/dashboard/settings/update-password"
+            activeClass="bg-sky-500 text-white"
+            class="rounded-md w-full px-2 inline-flex space-x-2 items-center border-b border-b-sky-500 py-3 hover:bg-white/5 transition ease-linear duration-150 hover:border hover:border-sky-500"
+          >
+            <div class="flex flex-col">
+              <span class="text-xs md:text-lg font-bold leading-5 text-sky-950 dark:text-sky-50"
+                >Actualizar Contraseña</span
+              >
+            </div>
+          </RouterLink>
+
+          <RouterLink
+            to="/dashboard/settings/delete-account"
+            activeClass="bg-sky-500 text-white"
+            class="rounded-md w-full px-2 inline-flex space-x-2 items-center border-b border-b-sky-500 py-3 hover:bg-white/5 transition ease-linear duration-150 hover:border hover:border-sky-500"
+          >
+            <div class="flex flex-col">
+              <span class="text-xs md:text-lg font-bold leading-5 text-sky-950 dark:text-sky-50"
+                >Eliminar Cuenta</span
+              >
+            </div>
+          </RouterLink>
+        </div>
+      </div>
+
+      <div class="text-black px-2 mt-2 w-full max-w-xl m-auto">
+        <RouterView />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-//TODO: Terminar de Implementar
+import { RouterView } from 'vue-router'
 </script>

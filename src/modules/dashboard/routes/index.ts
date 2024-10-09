@@ -50,41 +50,41 @@ export const dashboardRoutes: RouteRecordRaw = {
     },
     {
       path: 'edit-recipe/:id',
-      component: import('@/modules/dashboard/views/EditRecipeView.vue')
+      component: () => import('@/modules/dashboard/views/EditRecipeView.vue')
     },
     {
       path: 'my-account',
       name: 'my-account',
-      component: import('@/modules/dashboard/views/MyAccountView.vue')
+      component: () => import('@/modules/dashboard/views/MyAccountView.vue')
     },
     {
       path: 'my-recipes',
       name: 'my-recipes',
-      component: import('@/modules/dashboard/views/MyRecipesView.vue')
+      component: () => import('@/modules/dashboard/views/MyRecipesView.vue')
     },
     {
       path: 'edit-account/:id',
-      component: import('@/modules/dashboard/views/EditAccountView.vue')
+      component: () => import('@/modules/dashboard/views/EditAccountView.vue')
     },
     {
       path: 'update-image',
       name: 'update-image',
-      component: import('@/modules/dashboard/views/UpdateImageView.vue')
+      component: () => import('@/modules/dashboard/views/UpdateImageView.vue')
     },
     {
       path: 'settings',
       name: 'settings',
-      component: import('@/modules/dashboard/views/SettingsView.vue'),
+      component: () => import('@/modules/dashboard/views/SettingsView.vue'),
       children: [
         {
           path: 'update-password',
           name: 'update-password',
-          component: import('@/modules/dashboard/views/UpdatePasswordView.vue')
+          component: () => import('@/modules/dashboard/views/UpdatePasswordView.vue')
         },
         {
           path: 'delete-account',
           name: 'delete-account',
-          component: import('@/modules/dashboard/views/DeleteAccountView.vue')
+          component: () => import('@/modules/dashboard/views/DeleteAccountView.vue')
         }
       ]
     }

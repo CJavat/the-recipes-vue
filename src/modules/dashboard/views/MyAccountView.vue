@@ -1,7 +1,90 @@
 <template>
-  <h1>My Account View</h1>
+  <div class="pt-7">
+    <div>
+      <div class="px-4 sm:px-0">
+        <h3 class="text-2xl text-black dark:text-white mb-3">Mi Cuenta</h3>
+      </div>
+
+      <div class="mt-6 border-t border-t-sky-300 dark:border-t-sky-900">
+        <dl class="divide-y divide-sky-300 dark:divide-sky-900">
+          <div class="px-4 py-6 grid sm:grid-cols-3 sm:gap-4 sm:px-0 items-center grid-cols-2">
+            <dt class="text-sm font-medium leading-6 text-black dark:text-white">Avatar</dt>
+            <dd
+              class="h-16 w-16 md:h-28 md:w-28 mt-1 text-sm leading-6 text-sky-950 dark:text-sky-300 sm:mt-0 rounded-full border border-sky-500"
+            >
+              <img
+                class="h-16 w-16 md:h-28 md:w-28 object-scale-down rounded-full"
+                :src="imageUrl"
+                :alt="user?.firstName.concat(' ', user!?.lastName, ' - AVATAR')"
+              />
+            </dd>
+            <RouterLink
+              to="/dashboard/update-image"
+              class="col-span-3 md:col-span-1 mt-5 flex w-full justify-center rounded-md border border-sky-600 hover:border-sky-500 text-sky-950 dark:text-sky-50 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Cambiar Imagen
+            </RouterLink>
+          </div>
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-black dark:text-white">Nombre</dt>
+            <dd class="mt-1 text-sm leading-6 text-sky-950 dark:text-sky-300 sm:col-span-2 sm:mt-0">
+              {{ user?.firstName }}
+            </dd>
+          </div>
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-black dark:text-white">Apellido</dt>
+            <dd class="mt-1 text-sm leading-6 text-sky-950 dark:text-sky-300 sm:col-span-2 sm:mt-0">
+              {{ user?.lastName }}
+            </dd>
+          </div>
+
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-black dark:text-white">Email</dt>
+            <dd class="mt-1 text-sm leading-6 text-sky-950 dark:text-sky-300 sm:col-span-2 sm:mt-0">
+              {{ user?.email }}
+            </dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-black dark:text-white">
+              <RouterLink
+                :to="`/dashboard/edit-account/${user?.id}`"
+                class="flex w-full justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Editar Perfil
+              </RouterLink>
+            </dt>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-//TODO: Terminar de Implementar
+import { onMounted, ref } from 'vue'
+import { useAuthStore } from '@/modules/auth/stores/auth.store'
+
+import type { User } from '@/modules/auth/interfaces'
+
+const authStore = useAuthStore()
+
+const backendUrl: string = import.meta.env.VITE_RECIPES_API_URL
+const isLoading = ref<boolean>(false)
+const user = ref<User>()
+const imageUrl = ref<string>()
+
+onMounted(() => {
+  isLoading.value = true
+
+  user.value = authStore.user
+  if (authStore.user!.avatar.startsWith('http')) {
+    imageUrl.value = authStore.user!.avatar
+  } else {
+    imageUrl.value = `${backendUrl.replace('/api', '')}/${authStore.user!.avatar}`
+  }
+
+  isLoading.value = false
+})
 </script>

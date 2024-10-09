@@ -37,7 +37,8 @@ onMounted(() => {
   }
 
   avatar.alt = authStore.user!.firstName + authStore.user!.lastName
-  if (avatar.src.startsWith('http')) {
+
+  if (authStore.user?.avatar.startsWith('http')) {
     avatar.src = authStore.user!.avatar
   } else {
     avatar.src = `${backendUrl.replace('/api', '')}/${authStore.user!.avatar}`
