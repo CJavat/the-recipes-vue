@@ -19,7 +19,7 @@
         <AddRecipe class="my-5 cursor-pointer" />
       </div>
 
-      <div class="px-5">
+      <div v-if="!isLoading" class="px-5">
         <h3 class="text-2xl text-black dark:text-white mb-3">Recetas</h3>
 
         <div
@@ -32,6 +32,10 @@
         <p v-else class="border border-red-500 text-red-500 rounded-md text-center p-2">
           No hay recetas para mostrar
         </p>
+      </div>
+
+      <div v-else class="h-96 flex justify-center items-center">
+        <Spinner class="w-32" />
       </div>
 
       <Pagination
@@ -54,6 +58,8 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRecipeStore } from '../stores'
+import { useAuthStore } from '../../auth/stores/auth.store'
+import { AxiosError } from 'axios'
 
 import Swal from 'sweetalert2'
 import RecipeCard from '../components/RecipeCard.vue'
@@ -66,12 +72,13 @@ import type { CardRecipe, CategoryResponse, FavoriteResponse } from '../interfac
 const router = useRouter()
 const route = useRoute()
 const recipeStore = useRecipeStore()
-const isLoading = ref<boolean>(false)
+const authStore = useAuthStore()
 
+const isLoading = ref<boolean>(false)
 const recipes = ref<CardRecipe[]>()
 const categories = ref<CategoryResponse[]>()
 
-const limit = ref<number>(5)
+const limit = ref<number>(6)
 const offset = ref<number>(0)
 const currentPage = ref<number>(1)
 const finalPage = ref<number>(2)
@@ -79,7 +86,7 @@ const finalPage = ref<number>(2)
 onMounted(() => {
   getCategories()
 
-  limit.value = Number((route.query['limit'] as string) ?? 4)
+  limit.value = Number((route.query['limit'] as string) ?? 6)
   offset.value = Number((route.query['offset'] as string) ?? 0)
 
   currentPage.value = Math.floor(offset.value / limit.value) + 1
@@ -114,6 +121,11 @@ const getRecipes = async (limit: number, offset: number) => {
   } catch (error) {
     console.log(error)
     recipes.value = []
+    if (error instanceof AxiosError && error.response?.data.statusCode === 401) {
+      authStore.logout()
+      return router.replace({ path: '/auth/login' })
+    }
+
     router.push({ path: '/dashboard' })
   } finally {
     isLoading.value = false

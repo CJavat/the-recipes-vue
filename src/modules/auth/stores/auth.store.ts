@@ -132,7 +132,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = data
   }
 
-  const logout = async () => {
+  const logout = () => {
     localStorage.removeItem('token')
 
     authStatus.value = AuthStatus.Unauthenticated
