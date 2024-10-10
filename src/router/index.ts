@@ -9,7 +9,7 @@ const router = createRouter({
     dashboardRoutes,
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/'
+      redirect: '/dashboard'
     }
   ]
 })

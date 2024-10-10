@@ -130,7 +130,6 @@ export const useAuthStore = defineStore(
     }
 
     const updateUser = (data: User): void => {
-      //! Podría no necesitarse.
       user.value = data
     }
 
