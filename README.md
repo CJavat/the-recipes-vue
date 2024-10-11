@@ -9,4 +9,6 @@
 
 1. Instalar dependencias `npm install`.
 
-2. Correr el proyecto en modo desarrollo `npm run dev`.
+2. Copiar el archivo `.env.template` y renombrarlo a `.env` y configurar las variables.
+
+3. Correr el proyecto en modo desarrollo `npm run dev`.
