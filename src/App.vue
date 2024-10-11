@@ -28,11 +28,13 @@ authStore.$subscribe(
     }
 
     if (route.path.includes('/auth') && state.authStatus === AuthStatus.Authenticated) {
+      console.log('redirigiendo a home')
       router.replace({ name: 'home' })
       return
     }
 
     if (route.path.includes('/dashboard') && state.authStatus === AuthStatus.Unauthenticated) {
+      console.log('redirigiendo a login')
       router.replace({ name: 'login' })
       return
     }

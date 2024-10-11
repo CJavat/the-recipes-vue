@@ -14,8 +14,6 @@ const pinia = createPinia()
 
 pinia.use(piniaPluginPersistedstate)
 
-console.log(import.meta.env.BASE_URL)
-
 app.use(pinia)
 app.use(router)
 

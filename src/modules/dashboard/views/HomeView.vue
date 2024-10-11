@@ -84,6 +84,12 @@ const currentPage = ref<number>(1)
 const finalPage = ref<number>(2)
 
 onMounted(() => {
+  if (!authStore.user) {
+    authStore.logout()
+    router.replace('/auth/login')
+    return
+  }
+
   getCategories()
 
   limit.value = Number((route.query['limit'] as string) ?? 6)
@@ -118,7 +124,7 @@ const getRecipes = async (limit: number, offset: number) => {
 
     finalPage.value = totalPages
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     recipes.value = []
     if (error instanceof AxiosError && error.response?.data.statusCode === 401) {
       authStore.logout()
@@ -138,9 +144,8 @@ const getCategories = async () => {
     const categoriesResponse = await recipeStore.getCategories()
     categories.value = categoriesResponse
   } catch (error) {
-    console.log(error)
-    categories.value = []
-    Swal.fire('Error', error as string, 'error')
+    // console.log(error)
+    Swal.fire('Error: Categorías', 'Hubó un error al obtener las categorías', 'error')
   } finally {
     isLoading.value = false
   }
