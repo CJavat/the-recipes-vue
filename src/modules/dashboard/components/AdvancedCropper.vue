@@ -33,12 +33,6 @@
         </button>
       </div>
     </div>
-
-    <!-- Mostrar la imagen recortada -->
-    <div v-if="croppedImage">
-      <h3>Imagen recortada:</h3>
-      <img :src="croppedImage" alt="Cropped Image" />
-    </div>
   </div>
 </template>
 
