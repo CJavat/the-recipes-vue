@@ -10,20 +10,19 @@ interface urlImage {
   src: string
   alt: string
 }
-
 const urlImage: urlImage = reactive({
-  src: '../../../assets/moon.svg',
+  src: '/moon.svg',
   alt: 'Moon logo'
 })
 
 onMounted(() => {
   if (localStorage.getItem('theme') !== 'dark' || !localStorage.getItem('theme')) {
     document.documentElement.classList.remove('dark')
-    urlImage.src = '/src/assets/moon.svg'
+    urlImage.src = '/moon.svg'
     urlImage.alt = 'Moon logo'
   } else {
     document.documentElement.classList.add('dark')
-    urlImage.src = '/src/assets/sun.svg'
+    urlImage.src = '/sun.svg'
     urlImage.alt = 'Sun logo'
   }
 })
@@ -32,12 +31,12 @@ const changeTheme = () => {
   if (localStorage.getItem('theme') === 'dark') {
     localStorage.removeItem('theme')
     document.documentElement.classList.remove('dark')
-    urlImage.src = '/src/assets/moon.svg'
+    urlImage.src = '/moon.svg'
     urlImage.alt = 'Moon logo'
   } else {
     localStorage.setItem('theme', 'dark')
     document.documentElement.classList.add('dark')
-    urlImage.src = '/src/assets/sun.svg'
+    urlImage.src = '/sun.svg'
     urlImage.alt = 'Sun logo'
   }
 }
