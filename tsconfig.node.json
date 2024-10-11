@@ -14,6 +14,6 @@
 
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": ["node", "vitest/globals"] // Si usas funcionalidades globales de Vitest
+    "types": ["node"]
   }
 }

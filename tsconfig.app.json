@@ -9,7 +9,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "lib": ["DOM", "ESNext"] // Añade esta línea para asegurar compatibilidad con el DOM y ESNext
+    }
   }
 }
